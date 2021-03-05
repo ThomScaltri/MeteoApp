@@ -23,7 +23,7 @@ import ch.supsi.dti.isin.meteoapp.model.Location;
 
 public class ListFragment extends Fragment {
     private RecyclerView mLocationRecyclerView;
-    private LocationAdapter mAdapter;
+    private LocationAdapter mAdapter; //madapter.notify per informare che il modello è cambiato
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
