@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class LocationsHolder {
 
-    private static LocationsHolder sLocationsHolder;
+    private static LocationsHolder sLocationsHolder; //Singleton
     private List<Location> mLocations;
 
     //metodo per aggiungere location alla lista

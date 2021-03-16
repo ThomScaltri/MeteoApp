@@ -1,8 +1,10 @@
 package ch.supsi.dti.isin.meteoapp.fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,15 +59,31 @@ public class ListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
+
+                //richiamo dialog aggiunta location
+
+                FragmentManager fm= getFragmentManager();
+                NewLocationFragment nlf=new NewLocationFragment();
+                nlf.setTargetFragment(this,0);
+                nlf.show(fm,null);
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                mBuilder.show();
+
+
                 Toast toast = Toast.makeText(getActivity(),
                         "Add a location",
                         Toast.LENGTH_SHORT);
+
                 toast.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
     // Holder
 

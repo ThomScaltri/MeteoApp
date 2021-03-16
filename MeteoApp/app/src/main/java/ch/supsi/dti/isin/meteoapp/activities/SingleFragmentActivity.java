@@ -1,11 +1,16 @@
 package ch.supsi.dti.isin.meteoapp.activities;
 
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import ch.supsi.dti.isin.meteoapp.R;
+import ch.supsi.dti.isin.meteoapp.fragments.NewLocationFragment;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
@@ -14,6 +19,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_single_fragment);
+
+
+
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
@@ -23,4 +31,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    public void openViewNewLocation()
+    {
+        NewLocationFragment lsd=new NewLocationFragment();
+        lsd.show(getSupportFragmentManager(),"Example Dialog");
+
+    }
+
 }
