@@ -32,11 +32,4 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 
-    public void openViewNewLocation()
-    {
-        NewLocationFragment lsd=new NewLocationFragment();
-        lsd.show(getSupportFragmentManager(),"Example Dialog");
-
-    }
-
 }

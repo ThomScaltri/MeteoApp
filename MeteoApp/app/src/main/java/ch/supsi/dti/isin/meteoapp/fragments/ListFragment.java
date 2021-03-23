@@ -67,10 +67,6 @@ public class ListFragment extends Fragment {
             case R.id.menu_add:
 
                 //richiamo dialog aggiunta location
-                /*FragmentManager fm= getFragmentManager();
-                NewLocationFragment nlf=new NewLocationFragment();
-                nlf.setTargetFragment(this,0);
-                nlf.show(fm,null);*/
 
                 final EditText editText = new EditText(getContext());
                 editText.setText("");
@@ -86,7 +82,6 @@ public class ListFragment extends Fragment {
 
                                 LocationsHolder.get(getActivity()).insertData(m_Text);
 
-                                //mAdapter.notify();
                                 mAdapter.notifyDataSetChanged();
 
                                 Toast toast = Toast.makeText(getActivity(),
@@ -99,47 +94,11 @@ public class ListFragment extends Fragment {
                         .setView(editText)
                         .show();
 
-                //fai partire dialog
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-    /*@RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Add location");
-                // I'm using fragment here so I'm using getView() to provide ViewGroup
-                // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-                View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.add_location, (ViewGroup) getView(), false);
-                // Set up the input
-                final EditText input = viewInflated.findViewById(R.id.editText);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                builder.setView(viewInflated);
-                // Set up the buttons functionality
-                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    dialog.dismiss();
-                    String m_Text = input.getText().toString();
-                    LocationsHolder.get(getActivity()).insertData(m_Text);
-                    mAdapter.notifyDataSetChanged();
-                    Toast toast = Toast.makeText(getActivity(),
-                            "location added",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                });
-                builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
-                builder.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
     // Holder
 
