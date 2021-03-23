@@ -11,7 +11,7 @@ public class LocationsHolder {
     private static LocationsHolder sLocationsHolder; //Singleton
     private List<Location> mLocations;
 
-    //metodo per aggiungere location alla lista
+
 
     public static LocationsHolder get(Context context) {
         if (sLocationsHolder == null)
@@ -20,14 +20,26 @@ public class LocationsHolder {
         return sLocationsHolder;
     }
 
+    //metodo per aggiungere location alla lista
+    public void insertData(String string){
+        Location l = new Location();
+        l.setName(string);
+        mLocations.add(l);
+
+    }
+
+
     //Lettura di location da DB
     private LocationsHolder(Context context) {
         mLocations = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             Location location = new Location();
             location.setName("Location # " + i);
             mLocations.add(location);
         }
+
+
     }
 
     public List<Location> getLocations() {
