@@ -51,35 +51,7 @@ public class ListFragment extends Fragment {
         setHasOptionsMenu(true);
 
         //setContentView(R.layout.fragment_list);
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission not granted");
-            requestPermissions();
-        } else {
-            Log.i(TAG, "Permission granted");
-            startLocationListener();
-        }
     }
-
-    private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        } else {
-            startLocationListener();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    startLocationListener();
-                return;
-            }
-        }
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,7 +74,7 @@ public class ListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_list, menu);
     }
 
-    void startLocationListener(){
+    public void startLocationListener(){
 
         LocationParams.Builder builder = new LocationParams.Builder()
                 .setAccuracy(LocationAccuracy.HIGH)
