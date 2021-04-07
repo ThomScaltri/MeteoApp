@@ -1,15 +1,21 @@
 package ch.supsi.dti.isin.meteoapp.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,20 +34,56 @@ import ch.supsi.dti.isin.meteoapp.activities.DetailActivity;
 import ch.supsi.dti.isin.meteoapp.activities.MainActivity;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import ch.supsi.dti.isin.meteoapp.model.Location;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
 
 public class ListFragment extends Fragment {
     private RecyclerView mLocationRecyclerView;
     private LocationAdapter mAdapter; //madapter.notify per informare che il modello è cambiato
 
+    private static final String TAG = "GPS";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //setContentView(R.layout.fragment_list);
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission not granted");
+            requestPermissions();
+        } else {
+            Log.i(TAG, "Permission granted");
+            startLocationListener();
+        }
+    }
+
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        } else {
+            startLocationListener();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    startLocationListener();
+                return;
+            }
+        }
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        startLocationListener();
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         mLocationRecyclerView = view.findViewById(R.id.recycler_view);
         mLocationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -54,11 +96,35 @@ public class ListFragment extends Fragment {
     }
 
     // Menu
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_list, menu);
+    }
+
+    void startLocationListener(){
+
+        LocationParams.Builder builder = new LocationParams.Builder()
+                .setAccuracy(LocationAccuracy.HIGH)
+                .setDistance(0)
+                .setInterval(5000);
+        // 5 sec
+        SmartLocation.with(getContext())
+                .location()
+                .continuous()
+                .config(builder.build())
+                .start(new OnLocationUpdatedListener() {
+                    @Override
+                    public void onLocationUpdated(android.location.Location location) {
+                        Log.i(TAG, "GPS" + location);
+                        Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
+                        gpsLoc.setLati(location.getLatitude());
+                        gpsLoc.setLongi(location.getLongitude());
+                        gpsLoc.setName("ourLOC" + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°");
+                        //LocationsHolder.get(getActivity()).addLocation(gpsLoc);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
    @Override

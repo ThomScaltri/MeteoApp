@@ -28,6 +28,9 @@ public class LocationsHolder {
 
     }
 
+    public void addLocation(Location location){
+        mLocations.add(location);
+    }
 
     //Lettura di location da DB
     private LocationsHolder(Context context) {
@@ -35,11 +38,9 @@ public class LocationsHolder {
 
         for (int i = 0; i < 10; i++) {
             Location location = new Location();
-            location.setName("Location # " + i);
+            location.setName("Location # " + i + " "+ location.getLati() +"°  "+ location.getLongi()+ "°");
             mLocations.add(location);
         }
-
-
     }
 
     public List<Location> getLocations() {

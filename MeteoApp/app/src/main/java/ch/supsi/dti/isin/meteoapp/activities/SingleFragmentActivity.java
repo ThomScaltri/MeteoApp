@@ -1,25 +1,28 @@
 package ch.supsi.dti.isin.meteoapp.activities;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.LocaleList;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import ch.supsi.dti.isin.meteoapp.R;
-import ch.supsi.dti.isin.meteoapp.fragments.NewLocationFragment;
+import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
+
+    private SQLiteDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_single_fragment);
 
+        Context context = getApplicationContext();
+        mDatabase = new DatabaseHelper(context).getWritableDatabase();
 
 
         FragmentManager fm = getSupportFragmentManager();

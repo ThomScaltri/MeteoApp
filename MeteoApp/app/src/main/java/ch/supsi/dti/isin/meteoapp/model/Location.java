@@ -5,6 +5,8 @@ import java.util.UUID;
 public class Location {
     private UUID Id;
     private String mName;
+    private double lati;
+    private double longi;
 
     public UUID getId() {
         return Id;
@@ -22,7 +24,26 @@ public class Location {
         mName = name;
     }
 
+    public double getLati() {
+        return lati;
+    }
+
+    public void setLati(double lati) {
+        this.lati = lati;
+    }
+
+    public double getLongi() {
+        return longi;
+    }
+
+    public void setLongi(double longi) {
+        this.longi = longi;
+    }
+
+
     public Location() {
         Id = UUID.randomUUID();
+        lati=0.0;
+        longi=0.0;
     }
 }
