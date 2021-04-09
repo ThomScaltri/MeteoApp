@@ -46,4 +46,11 @@ public class Location {
         lati=0.0;
         longi=0.0;
     }
+
+    public Location(UUID id, String mName, double lati, double longi) {
+        Id = id;
+        this.mName = mName;
+        this.lati = lati;
+        this.longi = longi;
+    }
 }

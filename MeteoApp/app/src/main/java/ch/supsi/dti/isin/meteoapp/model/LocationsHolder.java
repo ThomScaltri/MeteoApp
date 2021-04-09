@@ -36,7 +36,7 @@ public class LocationsHolder {
     private LocationsHolder(Context context) {
         mLocations = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             Location location = new Location();
             location.setName("Location # " + i + " "+ location.getLati() +"°  "+ location.getLongi()+ "°");
             mLocations.add(location);

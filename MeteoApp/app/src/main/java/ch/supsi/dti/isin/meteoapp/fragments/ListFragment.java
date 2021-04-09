@@ -1,6 +1,8 @@
 package ch.supsi.dti.isin.meteoapp.fragments;
 
 import android.Manifest;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -32,6 +34,7 @@ import java.util.List;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.activities.DetailActivity;
 import ch.supsi.dti.isin.meteoapp.activities.MainActivity;
+import ch.supsi.dti.isin.meteoapp.db.MeteoDbSchema;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import ch.supsi.dti.isin.meteoapp.model.Location;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
@@ -88,7 +91,7 @@ public class ListFragment extends Fragment {
                 .start(new OnLocationUpdatedListener() {
                     @Override
                     public void onLocationUpdated(android.location.Location location) {
-                        Log.i(TAG, "GPS" + location);
+                        //Log.i(TAG, "GPS" + location);
                         Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
                         gpsLoc.setLati(location.getLatitude());
                         gpsLoc.setLongi(location.getLongitude());
@@ -118,7 +121,12 @@ public class ListFragment extends Fragment {
                                 //add location ad holder
                                 String m_Text = editText.getText().toString();
 
-                                LocationsHolder.get(getActivity()).insertData(m_Text);
+                                //LocationsHolder.get(getActivity()).insertData(m_Text);
+
+                                Location location=new Location();
+                                location.setName(m_Text);
+                                LocationsHolder.get(getActivity()).addLocation(location);
+                                //MainActivity.insertData(location);
 
                                 mAdapter.notifyDataSetChanged();
 
