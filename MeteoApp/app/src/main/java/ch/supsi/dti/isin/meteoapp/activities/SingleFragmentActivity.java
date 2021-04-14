@@ -2,6 +2,7 @@ package ch.supsi.dti.isin.meteoapp.activities;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.List;
+
+import ch.supsi.dti.isin.meteoapp.HttpService.LocationFetcher;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
 import ch.supsi.dti.isin.meteoapp.model.Location;
@@ -17,9 +21,10 @@ import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import static ch.supsi.dti.isin.meteoapp.activities.MainActivity.deleteData;
 import static ch.supsi.dti.isin.meteoapp.activities.MainActivity.insertData;
 
-public abstract class SingleFragmentActivity extends AppCompatActivity {
-    protected abstract Fragment createFragment();
 
+
+public abstract class SingleFragmentActivity extends AppCompatActivity{
+    protected abstract Fragment createFragment();
 
 
     @Override
@@ -39,7 +44,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         //Log.d("TAG", "onStart() called");
@@ -59,10 +64,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        deleteData();
+        //deleteData();
         /*for (Location l: LocationsHolder.get(this).getLocations()) {
             insertData(l);
-        }*/
+        }
 
         for(int i=1;i<LocationsHolder.get(this).getLocations().size();i++) {
             insertData(LocationsHolder.get(this).getLocations().get(i));
@@ -73,9 +78,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-
-
-    }
+    }*/
 
 }

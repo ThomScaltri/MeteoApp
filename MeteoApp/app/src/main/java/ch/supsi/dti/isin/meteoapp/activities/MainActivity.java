@@ -26,33 +26,11 @@ import ch.supsi.dti.isin.meteoapp.fragments.ListFragment;
 import ch.supsi.dti.isin.meteoapp.model.Location;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 
-interface OnTaskCompleted {
-    void onTaskCompleted(List<Location> location);
-}
-
-class LocationTask extends AsyncTask<Void, Void, List<Location>> {
-
-    private OnTaskCompleted listener;
-
-    public LocationTask(OnTaskCompleted listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    protected List<Location> doInBackground(Void... voids) {
-        return new LocationFetcher().fetchItems();
-    }
-
-    @Override
-    protected void onPostExecute(List<Location> items) {
-        listener.onTaskCompleted(items);
-    }
-}
-
-public class MainActivity extends SingleFragmentActivity {
+public class MainActivity extends SingleFragmentActivity{
 
     //riferimento a fragment
     //fragment.aggiorna
+
     private static final String TAG = "GPS";
     ListFragment listFragment=new ListFragment();
 
@@ -82,6 +60,9 @@ public class MainActivity extends SingleFragmentActivity {
         //mDatabase.close();
 
     }
+
+
+
 
     public static void insertData(Location entry) {
         ContentValues values = DBContentValues.getContentValues(entry);
@@ -142,6 +123,7 @@ public class MainActivity extends SingleFragmentActivity {
             }
         }
     }
+
 
     /*@Override
     public void onDestroy() {

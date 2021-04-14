@@ -31,6 +31,7 @@ import android.content.DialogInterface;
 
 import java.util.List;
 
+import ch.supsi.dti.isin.meteoapp.HttpService.LocationFetcher;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.activities.DetailActivity;
 import ch.supsi.dti.isin.meteoapp.activities.MainActivity;
@@ -95,7 +96,7 @@ public class ListFragment extends Fragment {
                         Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
                         gpsLoc.setLati(location.getLatitude());
                         gpsLoc.setLongi(location.getLongitude());
-                        gpsLoc.setName("ourLOC" + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°");
+                        gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
                         //LocationsHolder.get(getActivity()).addLocation(gpsLoc);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -121,18 +122,42 @@ public class ListFragment extends Fragment {
                                 //add location ad holder
                                 String m_Text = editText.getText().toString();
 
+
                                 //LocationsHolder.get(getActivity()).insertData(m_Text);
 
                                 Location location=new Location();
                                 location.setName(m_Text);
-                                LocationsHolder.get(getActivity()).addLocation(location);
-                                //MainActivity.insertData(location);
+                                boolean flag=false;
+                                for (Location l: LocationsHolder.get(getActivity()).getLocations() ) {
+                                    if(l.getName().equals(m_Text)) {
+                                        flag=false;
+                                        break;
+                                    }
+                                    else {
+                                        flag=true;
+                                    }
 
-                                mAdapter.notifyDataSetChanged();
+                                }
 
-                                Toast toast = Toast.makeText(getActivity(),
-                                        "location added",
-                                        Toast.LENGTH_SHORT);
+                                Toast toast;
+
+                                if(flag) {
+                                    LocationsHolder.get(getActivity()).addLocation(location);
+                                    MainActivity.insertData(location);
+
+                                    mAdapter.notifyDataSetChanged();
+                                    toast = Toast.makeText(getActivity(),
+                                            "location added",
+                                            Toast.LENGTH_SHORT);
+                                }
+                                else{
+                                    mAdapter.notifyDataSetChanged();
+                                    toast = Toast.makeText(getActivity(),
+                                            "location already added",
+                                            Toast.LENGTH_SHORT);
+
+                                }
+
                                 toast.show();
                             }
                         })

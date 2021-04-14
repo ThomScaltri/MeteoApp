@@ -53,4 +53,6 @@ public class Location {
         this.lati = lati;
         this.longi = longi;
     }
+
+
 }
