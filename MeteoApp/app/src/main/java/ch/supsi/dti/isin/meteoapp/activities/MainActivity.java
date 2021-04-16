@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
-import ch.supsi.dti.isin.meteoapp.HttpService.LocationFetcher;
+import ch.supsi.dti.isin.meteoapp.HttpService.Http;
 import ch.supsi.dti.isin.meteoapp.db.CursorWrapper;
 import ch.supsi.dti.isin.meteoapp.db.DBContentValues;
 import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
@@ -81,6 +81,7 @@ public class MainActivity extends SingleFragmentActivity{
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Location entry = cursor.getLocation();
+                Http.doRequest(entry);
                 LocationsHolder.get(this).addLocation(entry);
 
                 cursor.moveToNext();

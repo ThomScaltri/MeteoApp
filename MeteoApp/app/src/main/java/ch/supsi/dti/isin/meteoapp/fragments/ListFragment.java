@@ -31,7 +31,7 @@ import android.content.DialogInterface;
 
 import java.util.List;
 
-import ch.supsi.dti.isin.meteoapp.HttpService.LocationFetcher;
+import ch.supsi.dti.isin.meteoapp.HttpService.Http;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.activities.DetailActivity;
 import ch.supsi.dti.isin.meteoapp.activities.MainActivity;
@@ -140,22 +140,30 @@ public class ListFragment extends Fragment {
                                 }
 
                                 Toast toast;
+                                Http.doRequest(location);
 
-                                if(flag) {
-                                    LocationsHolder.get(getActivity()).addLocation(location);
-                                    MainActivity.insertData(location);
-
-                                    mAdapter.notifyDataSetChanged();
+                                if(location.getWeather()==null) {
                                     toast = Toast.makeText(getActivity(),
-                                            "location added",
+                                            "location not found",
                                             Toast.LENGTH_SHORT);
-                                }
-                                else{
-                                    mAdapter.notifyDataSetChanged();
-                                    toast = Toast.makeText(getActivity(),
-                                            "location already added",
-                                            Toast.LENGTH_SHORT);
+                                }else {
 
+                                    if (flag) {
+                                        location.setName(location.getWeather().getName());
+
+                                        LocationsHolder.get(getActivity()).addLocation(location);
+                                        MainActivity.insertData(location);
+                                        mAdapter.notifyDataSetChanged();
+                                        toast = Toast.makeText(getActivity(),
+                                                "location added",
+                                                Toast.LENGTH_SHORT);
+                                    } else {
+                                        mAdapter.notifyDataSetChanged();
+                                        toast = Toast.makeText(getActivity(),
+                                                "location already added",
+                                                Toast.LENGTH_SHORT);
+
+                                    }
                                 }
 
                                 toast.show();

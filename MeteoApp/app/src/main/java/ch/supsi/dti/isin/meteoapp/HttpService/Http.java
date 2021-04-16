@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -17,22 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import ch.supsi.dti.isin.meteoapp.model.Information;
 import ch.supsi.dti.isin.meteoapp.model.Location;
 
 interface OnTaskCompleted {
     void onTaskCompleted(List<Location> location);
 }
 
-public class LocationFetcher extends AsyncTask<Location, Void, Void> {
+public class Http extends AsyncTask<Location, Void, Void> {
 
     public static final String TAG = "METEOAPP";
     private static final String API_KEY = "9c7bc41f67eb76922b7785d7a39546ec"; //Nostro API KEY
 
     private OnTaskCompleted listener;
 
-    public LocationFetcher(OnTaskCompleted listener) {
+    /*public LocationFetcher(OnTaskCompleted listener) {
         this.listener = listener;
-    }
+    }*/
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
@@ -65,7 +67,7 @@ public class LocationFetcher extends AsyncTask<Location, Void, Void> {
     }
 
     //ESEMPIO
-    private Weather parseItems(JSONObject jsonBody) throws  JSONException {
+    /*private Weather parseItems(JSONObject jsonBody) throws  JSONException {
 
         JSONObject list = jsonBody.getJSONArray("list").getJSONObject(0);
         JSONObject main = list.getJSONObject("main");
@@ -81,24 +83,32 @@ public class LocationFetcher extends AsyncTask<Location, Void, Void> {
             return new Weather(name,description,temp,temp_max,temp_min,list.get("name").toString());
         else
             return new Weather(name,description,temp,temp_max,temp_min);
-    }
+    }*/
 
-    private Loca parseItems(List<Location> items, JSONObject jsonBody) throws IOException, JSONException {
-        JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
-        JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
+    private Information parseItems(JSONObject jsonBody) throws JSONException {
 
-        for (int i = 0; i < photoJsonArray.length(); i++) {
-            JSONObject photoJsonObject = photoJsonArray.getJSONObject(i);
-            Location item = new Location();
-            //item.setId(photoJsonObject.getString("id"));
-            //item.setCaption(photoJsonObject.getString("title"));
+        JSONObject list = jsonBody.getJSONArray("list").getJSONObject(0);
 
-            if (!photoJsonObject.has("url_s"))
-                continue;
+        Log.i("MERDA DE DIO CANE", "Porcodio: " + list);
 
-            //item.setUrl(photoJsonObject.getString("url_s"));
-            items.add(item);
-        }
+        JSONObject main = list.getJSONObject("main");
+        JSONObject weather = list.getJSONArray("weather").getJSONObject(0);
+
+        //Log.i("MERDA DE DIO PORCO", "Porcodio: " + weather);
+
+
+        Double tmp=main.getDouble("temp");
+        Double temp_min = main.getDouble("temp_min");
+        Double temp_max = main.getDouble("temp_max");
+
+        String name=list.getString("name");
+        String desc=weather.getString("description");
+        String icon= weather.getString("icon");
+        //Importazione Immagine
+
+        //Log.i("MERDA DE DIO CANE", "Porcodio: " + name);
+
+        return new Information(name,temp_max,temp_min,tmp,desc,icon);
     }
 
     @Override
@@ -129,9 +139,17 @@ public class LocationFetcher extends AsyncTask<Location, Void, Void> {
                 }
 
                 String jsonString = getUrlString(url);
-                Log.i(TAG, "Received JSON: " + jsonString);
+                //Log.i(TAG, "Received JSON: " + jsonString);
+
                 JSONObject jsonBody = new JSONObject(jsonString);
-                parseItems(location, jsonBody);
+
+                int count=jsonBody.getInt("count");
+                if(count>0){
+                    locations[0].setWeather(parseItems(jsonBody));
+                }else{
+                    locations[0].setWeather(null);
+                }
+
 
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to fetch items", ioe);
@@ -144,7 +162,7 @@ public class LocationFetcher extends AsyncTask<Location, Void, Void> {
     }
 
     public static void doRequest(Location mLocation) {
-        LocationFetcher t = new LocationFetcher();
+        Http t = new Http();
         try {
 
             t.execute(mLocation).get();
@@ -155,8 +173,8 @@ public class LocationFetcher extends AsyncTask<Location, Void, Void> {
         }
     }
 
-    @Override
+    /*@Override
     protected void onPostExecute(List<Location> items) {
         listener.onTaskCompleted(items);
-    }
+    }*/
 }

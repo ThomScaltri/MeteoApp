@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.UUID;
 
+import ch.supsi.dti.isin.meteoapp.HttpService.Http;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import ch.supsi.dti.isin.meteoapp.model.Location;
@@ -33,16 +34,35 @@ public class DetailLocationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID locationId = (UUID) getArguments().getSerializable(ARG_LOCATION_ID);
         mLocation = LocationsHolder.get(getActivity()).getLocation(locationId);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detail_location, container, false);
 
-        mIdTextView = v.findViewById(R.id.id_textView);
+        mIdTextView = v.findViewById(R.id.id_cityName);
         mIdTextView.setText(mLocation.getId().toString());
+        setInformationsOnView(v);
 
         return v;
+    }
+
+    private void setInformationsOnView(View v) {
+        mIdTextView = v.findViewById(R.id.id_cityName);
+        if (mLocation.getWeather().getName() != null)
+            mIdTextView.setText(mLocation.getWeather().getName());
+        else
+            mIdTextView.setText(mLocation.getName());
+
+        mIdTextView = v.findViewById(R.id.id_temp);
+        mIdTextView.setText(mLocation.getWeather().getTemp() + "");
+        mIdTextView = v.findViewById(R.id.degreeMin);
+        mIdTextView.setText(mLocation.getWeather().gettMin() + "");
+        mIdTextView = v.findViewById(R.id.degreeMax);
+        mIdTextView.setText(mLocation.getWeather().gettMax() + "");
+        mIdTextView = v.findViewById(R.id.description);
+        mIdTextView.setText(mLocation.getWeather().getDescription());
     }
 }
 

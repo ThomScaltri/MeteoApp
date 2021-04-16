@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
 
-import ch.supsi.dti.isin.meteoapp.HttpService.LocationFetcher;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
 import ch.supsi.dti.isin.meteoapp.model.Location;

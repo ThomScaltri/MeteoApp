@@ -7,6 +7,7 @@ public class Location {
     private String mName;
     private double lati;
     private double longi;
+    private Information weather;
 
     public UUID getId() {
         return Id;
@@ -40,6 +41,13 @@ public class Location {
         this.longi = longi;
     }
 
+    public Information getWeather() {
+        return weather;
+    }
+
+    public void setWeather(Information weather) {
+        this.weather = weather;
+    }
 
     public Location() {
         Id = UUID.randomUUID();
