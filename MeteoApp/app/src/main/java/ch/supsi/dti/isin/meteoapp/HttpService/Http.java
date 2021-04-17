@@ -66,35 +66,16 @@ public class Http extends AsyncTask<Location, Void, Void> {
         return new String(getUrlBytes(urlSpec));
     }
 
-    //ESEMPIO
-    /*private Weather parseItems(JSONObject jsonBody) throws  JSONException {
-
-        JSONObject list = jsonBody.getJSONArray("list").getJSONObject(0);
-        JSONObject main = list.getJSONObject("main");
-        Double temp = main.getDouble("temp");
-        Double temp_min = main.getDouble("temp_min");
-        Double temp_max = main.getDouble("temp_max");
-        String cityName="";
-
-        String name = list.getJSONArray("weather").getJSONObject(0).getString("main");
-        String description = list.getJSONArray("weather").getJSONObject(0).getString("description");
-        //System.out.println("info: " + temp + "," + temp_max +"," + temp_min +"," + descr);
-        if(list.has("name"))
-            return new Weather(name,description,temp,temp_max,temp_min,list.get("name").toString());
-        else
-            return new Weather(name,description,temp,temp_max,temp_min);
-    }*/
-
     private Information parseItems(JSONObject jsonBody) throws JSONException {
 
         JSONObject list = jsonBody.getJSONArray("list").getJSONObject(0);
 
-        Log.i("MERDA DE DIO CANE", "Porcodio: " + list);
+        Log.i("Ciao", "Ciao: " + list);
 
         JSONObject main = list.getJSONObject("main");
         JSONObject weather = list.getJSONArray("weather").getJSONObject(0);
 
-        //Log.i("MERDA DE DIO PORCO", "Porcodio: " + weather);
+        //Log.i("Ciao", "Ciao: " + weather);
 
 
         Double tmp=main.getDouble("temp");
@@ -106,7 +87,7 @@ public class Http extends AsyncTask<Location, Void, Void> {
         String icon= weather.getString("icon");
         //Importazione Immagine
 
-        //Log.i("MERDA DE DIO CANE", "Porcodio: " + name);
+        //Log.i("Ciao", "Ciao: " + name);
 
         return new Information(name,temp_max,temp_min,tmp,desc,icon);
     }

@@ -1,5 +1,7 @@
 package ch.supsi.dti.isin.meteoapp.model;
 
+import android.icu.text.IDNA;
+
 import java.util.UUID;
 
 public class Location {
@@ -53,6 +55,7 @@ public class Location {
         Id = UUID.randomUUID();
         lati=0.0;
         longi=0.0;
+        new Information("",0,0,0,"","");
     }
 
     public Location(UUID id, String mName, double lati, double longi) {
@@ -60,7 +63,17 @@ public class Location {
         this.mName = mName;
         this.lati = lati;
         this.longi = longi;
+        new Information("",0,0,0,"","");
     }
 
-
+    @Override
+    public String toString() {
+        return "Location{" +
+                "Id=" + Id +
+                ", mName='" + mName + '\'' +
+                ", lati=" + lati +
+                ", longi=" + longi +
+                ", weather=" + weather.toString() +
+                '}';
+    }
 }

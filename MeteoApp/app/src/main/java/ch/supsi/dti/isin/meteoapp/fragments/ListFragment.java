@@ -93,10 +93,10 @@ public class ListFragment extends Fragment {
                     @Override
                     public void onLocationUpdated(android.location.Location location) {
                         //Log.i(TAG, "GPS" + location);
-                        Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
-                        gpsLoc.setLati(location.getLatitude());
-                        gpsLoc.setLongi(location.getLongitude());
-                        gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
+                        //Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
+                        //gpsLoc.setLati(location.getLatitude());
+                        //gpsLoc.setLongi(location.getLongitude());
+                        //gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
                         //LocationsHolder.get(getActivity()).addLocation(gpsLoc);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -127,9 +127,15 @@ public class ListFragment extends Fragment {
 
                                 Location location=new Location();
                                 location.setName(m_Text);
+                                Http.doRequest(location);
+
                                 boolean flag=false;
-                                for (Location l: LocationsHolder.get(getActivity()).getLocations() ) {
-                                    if(l.getName().equals(m_Text)) {
+                                for (Location l: LocationsHolder.get(getActivity()).getLocations()) {
+                                    if(l.getWeather()==null)
+                                        Log.i("Gaspy", "Gay");
+
+                                    //Log.i("Ciao", "Bellissimo" + l.toString() );
+                                    if(l.getWeather().getName().equals(location.getWeather().getName())) {
                                         flag=false;
                                         break;
                                     }
@@ -140,7 +146,7 @@ public class ListFragment extends Fragment {
                                 }
 
                                 Toast toast;
-                                Http.doRequest(location);
+
 
                                 if(location.getWeather()==null) {
                                     toast = Toast.makeText(getActivity(),

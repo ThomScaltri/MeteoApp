@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ch.supsi.dti.isin.meteoapp.HttpService.Http;
+
 public class LocationsHolder {
 
     private static LocationsHolder sLocationsHolder; //Singleton
@@ -35,12 +37,11 @@ public class LocationsHolder {
     //Lettura di location da DB
     private LocationsHolder(Context context) {
         mLocations = new ArrayList<>();
+        Location location = new Location();
+        location.setName("GPS"); //"Location # " + i + " "+ location.getLati() +"°  "+ location.getLongi()+ "°"
+        mLocations.add(location);
+        Http.doRequest(location);
 
-        for (int i = 0; i < 1; i++) {
-            Location location = new Location();
-            location.setName("Location # " + i + " "+ location.getLati() +"°  "+ location.getLongi()+ "°");
-            mLocations.add(location);
-        }
     }
 
     public List<Location> getLocations() {
