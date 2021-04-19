@@ -1,15 +1,21 @@
 package ch.supsi.dti.isin.meteoapp.fragments;
 
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
 import java.util.UUID;
 
-import ch.supsi.dti.isin.meteoapp.HttpService.Http;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import ch.supsi.dti.isin.meteoapp.model.Location;
@@ -19,6 +25,7 @@ public class DetailLocationFragment extends Fragment {
 
     private Location mLocation;
     private TextView mIdTextView;
+    private ImageView mIdImageView;
 
     public static DetailLocationFragment newInstance(UUID locationId) {
         Bundle args = new Bundle();
@@ -63,6 +70,12 @@ public class DetailLocationFragment extends Fragment {
         mIdTextView.setText(mLocation.getWeather().gettMax() + "");
         mIdTextView = v.findViewById(R.id.description);
         mIdTextView.setText(mLocation.getWeather().getDescription());
+
+        mIdImageView=v.findViewById(R.id.icon);
+
+        mIdImageView.setImageBitmap(mLocation.getWeather().getImage());
+
+
     }
 }
 

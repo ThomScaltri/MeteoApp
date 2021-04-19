@@ -93,14 +93,20 @@ public class ListFragment extends Fragment {
                     @Override
                     public void onLocationUpdated(android.location.Location location) {
                         //Log.i(TAG, "GPS" + location);
-                        //Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
-                        //gpsLoc.setLati(location.getLatitude());
-                        //gpsLoc.setLongi(location.getLongitude());
+                        Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
+                        gpsLoc.setLati(location.getLatitude());
+                        gpsLoc.setLongi(location.getLongitude());
                         //gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
+                        //Log.i(TAG, "Lati" + location.getLongitude());
+                        //Log.i(TAG, "Longi" + location.getLatitude());
                         //LocationsHolder.get(getActivity()).addLocation(gpsLoc);
+
+                        Http.doRequest(gpsLoc);
                         mAdapter.notifyDataSetChanged();
                     }
                 });
+
+
     }
 
    @Override

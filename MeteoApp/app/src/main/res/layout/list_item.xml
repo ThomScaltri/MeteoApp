@@ -4,10 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Title"/>
+        android:layout_height="43dp"
+        android:text="Title"
+        android:textAlignment="viewStart"
+        android:textColor="#070707"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

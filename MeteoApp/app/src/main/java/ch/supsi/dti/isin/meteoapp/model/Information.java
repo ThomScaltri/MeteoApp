@@ -1,5 +1,10 @@
 package ch.supsi.dti.isin.meteoapp.model;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+import java.util.Arrays;
+
 public class Information {
 
     private String name;
@@ -8,6 +13,7 @@ public class Information {
     private double temp;
     private String description;
     private String icon;
+    private Bitmap image;
 
     public Information(String name,double tMax, double tMin, double temp, String description, String icon) {
         this.name=name;
@@ -66,7 +72,13 @@ public class Information {
         this.description = description;
     }
 
+    public Bitmap getImage() {
+        return image;
+    }
 
+    public void setImage(Bitmap image) {
+        this.image = image;//Arrays.copyOf(image, image.length);
+    }
 
     @Override
     public String toString() {

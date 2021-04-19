@@ -1,5 +1,9 @@
 package ch.supsi.dti.isin.meteoapp.HttpService;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -85,11 +90,39 @@ public class Http extends AsyncTask<Location, Void, Void> {
         String name=list.getString("name");
         String desc=weather.getString("description");
         String icon= weather.getString("icon");
-        //Importazione Immagine
-
-        //Log.i("Ciao", "Ciao: " + name);
 
         return new Information(name,temp_max,temp_min,tmp,desc,icon);
+    }
+
+    //NON UTILIZZATO
+    private byte[] parseIcon(String url) throws IOException {
+
+        try {
+
+            URL imageUrl = new URL(url);
+            URLConnection ucon = imageUrl.openConnection();
+
+            InputStream is = ucon.getInputStream();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int read = 0;
+
+            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, read);
+            }
+
+            baos.flush();
+
+            return  baos.toByteArray();
+
+        } catch (Exception e) {
+            Log.d("ImageManager", "Error: " + e.toString());
+        }
+
+        return null;
+
+
     }
 
     @Override
@@ -120,17 +153,27 @@ public class Http extends AsyncTask<Location, Void, Void> {
                 }
 
                 String jsonString = getUrlString(url);
-                //Log.i(TAG, "Received JSON: " + jsonString);
 
                 JSONObject jsonBody = new JSONObject(jsonString);
 
                 int count=jsonBody.getInt("count");
                 if(count>0){
                     locations[0].setWeather(parseItems(jsonBody));
+
+                    //URL per icona
+                    String urlIcon = "https://openweathermap.org/img/wn/" + locations[0].getWeather().getIcon() + "@2x.png";
+
+                    try {
+                        InputStream input = new java.net.URL(urlIcon).openStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(input);
+                        locations[0].getWeather().setImage(bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }else{
                     locations[0].setWeather(null);
                 }
-
 
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to fetch items", ioe);
