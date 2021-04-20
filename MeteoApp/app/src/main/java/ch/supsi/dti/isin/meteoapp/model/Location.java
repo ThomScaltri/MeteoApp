@@ -58,6 +58,10 @@ public class Location {
         new Information("",0,0,0,"","");
     }
 
+    public Location(String mName) {
+        this.mName = mName;
+    }
+
     public Location(UUID id, String mName, double lati, double longi) {
         Id = id;
         this.mName = mName;

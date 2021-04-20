@@ -1,19 +1,15 @@
-package ch.supsi.dti.isin.meteoapp.HttpService;
+package ch.supsi.dti.isin.meteoapp.Service;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -94,40 +90,8 @@ public class Http extends AsyncTask<Location, Void, Void> {
         return new Information(name,temp_max,temp_min,tmp,desc,icon);
     }
 
-    //NON UTILIZZATO
-    private byte[] parseIcon(String url) throws IOException {
-
-        try {
-
-            URL imageUrl = new URL(url);
-            URLConnection ucon = imageUrl.openConnection();
-
-            InputStream is = ucon.getInputStream();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
-            int read = 0;
-
-            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
-                baos.write(buffer, 0, read);
-            }
-
-            baos.flush();
-
-            return  baos.toByteArray();
-
-        } catch (Exception e) {
-            Log.d("ImageManager", "Error: " + e.toString());
-        }
-
-        return null;
-
-
-    }
-
     @Override
     protected Void doInBackground(Location... locations) {
-        List<Location> location=new ArrayList<>();
         String url;
 
         for(int i=0;i<locations.length;i++) {

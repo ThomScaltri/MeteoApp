@@ -6,18 +6,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import java.util.List;
-
-import ch.supsi.dti.isin.meteoapp.HttpService.Http;
+import ch.supsi.dti.isin.meteoapp.Service.Http;
 import ch.supsi.dti.isin.meteoapp.db.CursorWrapper;
 import ch.supsi.dti.isin.meteoapp.db.DBContentValues;
 import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
@@ -61,17 +57,36 @@ public class MainActivity extends SingleFragmentActivity{
 
     }
 
-
-
-
     public static void insertData(Location entry) {
         ContentValues values = DBContentValues.getContentValues(entry);
-        mDatabase.insert(MeteoDbSchema.TestTable.NAME, null, values); //ERRORE DI ACCESSO
+        mDatabase.insert(MeteoDbSchema.TestTable.NAME, null, values);
     }
 
     public static void deleteData()
     {
-        mDatabase.execSQL("delete from " + MeteoDbSchema.TestTable.NAME );
+        mDatabase.execSQL("delete from " + MeteoDbSchema.TestTable.NAME);
+    }
+
+    public Location readGPS()
+    {
+
+        Location entry;
+        CursorWrapper cursor = queryData(null, null);
+
+        if(cursor!=null){
+            try {
+
+                cursor.moveToFirst();
+                entry = cursor.getLocation();
+                if(entry==null)
+                    return null;
+            } finally {
+                cursor.close();
+            }
+        }else
+            return new Location("Error");
+
+        return entry;
     }
 
     public void readData() {
@@ -125,17 +140,4 @@ public class MainActivity extends SingleFragmentActivity{
         }
     }
 
-
-    /*@Override
-    public void onDestroy() {
-        super.onDestroy();
-        /*Log.d(TAG, "Stampa lista");
-
-        for (Location l:LocationsHolder.get(this).getLocations()) {
-            insertData(l);
-            Log.d(TAG, LocationsHolder.get(this).getLocations().toString());
-        }
-
-        Log.d(TAG, "onDestroy() called");
-    }*/
 }

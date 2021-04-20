@@ -43,40 +43,4 @@ public abstract class SingleFragmentActivity extends AppCompatActivity{
 
     }
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        //Log.d("TAG", "onStart() called");
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        //Log.d("TAG", "onResume() called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //Log.d("TAG", "onPause() called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //deleteData();
-        /*for (Location l: LocationsHolder.get(this).getLocations()) {
-            insertData(l);
-        }
-
-        for(int i=1;i<LocationsHolder.get(this).getLocations().size();i++) {
-            insertData(LocationsHolder.get(this).getLocations().get(i));
-        }
-        //Log.d("TAG", "onStop() called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }*/
-
 }

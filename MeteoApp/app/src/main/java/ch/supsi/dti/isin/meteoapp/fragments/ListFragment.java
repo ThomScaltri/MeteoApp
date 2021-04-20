@@ -1,19 +1,10 @@
 package ch.supsi.dti.isin.meteoapp.fragments;
 
-import android.Manifest;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,11 +22,10 @@ import android.content.DialogInterface;
 
 import java.util.List;
 
-import ch.supsi.dti.isin.meteoapp.HttpService.Http;
+import ch.supsi.dti.isin.meteoapp.Service.Http;
 import ch.supsi.dti.isin.meteoapp.R;
 import ch.supsi.dti.isin.meteoapp.activities.DetailActivity;
 import ch.supsi.dti.isin.meteoapp.activities.MainActivity;
-import ch.supsi.dti.isin.meteoapp.db.MeteoDbSchema;
 import ch.supsi.dti.isin.meteoapp.model.LocationsHolder;
 import ch.supsi.dti.isin.meteoapp.model.Location;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
@@ -138,7 +128,7 @@ public class ListFragment extends Fragment {
                                 boolean flag=false;
                                 for (Location l: LocationsHolder.get(getActivity()).getLocations()) {
                                     if(l.getWeather()==null)
-                                        Log.i("Gaspy", "Gay");
+                                        Log.i("ERRORe", "ERRORE");
 
                                     //Log.i("Ciao", "Bellissimo" + l.toString() );
                                     if(l.getWeather().getName().equals(location.getWeather().getName())) {

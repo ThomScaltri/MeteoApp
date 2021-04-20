@@ -26,6 +26,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.work:work-runtime:2.3.4'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'io.nlopez.smartlocation:library:3.3.3'
 }
