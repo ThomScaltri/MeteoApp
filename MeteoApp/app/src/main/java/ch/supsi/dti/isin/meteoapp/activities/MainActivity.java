@@ -1,6 +1,8 @@
 package ch.supsi.dti.isin.meteoapp.activities;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,10 +12,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import java.util.concurrent.TimeUnit;
 
 import ch.supsi.dti.isin.meteoapp.Service.Http;
+import ch.supsi.dti.isin.meteoapp.Service.NotifyWorker;
 import ch.supsi.dti.isin.meteoapp.db.CursorWrapper;
 import ch.supsi.dti.isin.meteoapp.db.DBContentValues;
 import ch.supsi.dti.isin.meteoapp.db.DatabaseHelper;
@@ -29,7 +38,6 @@ public class MainActivity extends SingleFragmentActivity{
 
     private static final String TAG = "GPS";
     ListFragment listFragment=new ListFragment();
-
     private static SQLiteDatabase mDatabase;
 
     @Override
@@ -44,6 +52,19 @@ public class MainActivity extends SingleFragmentActivity{
         Context context = getApplicationContext();
         mDatabase = new DatabaseHelper(context).getWritableDatabase();
         readData();
+        findGps();
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("default", "notificaBella", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Ciao gatto");
+
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
+        PeriodicWorkRequest periodicRequest = new PeriodicWorkRequest.Builder(NotifyWorker.class, 15, TimeUnit.MINUTES).build();
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("POLL WORK", ExistingPeriodicWorkPolicy.KEEP, periodicRequest);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission not granted");
@@ -67,26 +88,26 @@ public class MainActivity extends SingleFragmentActivity{
         mDatabase.execSQL("delete from " + MeteoDbSchema.TestTable.NAME);
     }
 
-    public Location readGPS()
+    public static boolean checkDB()
     {
+        Cursor c =mDatabase.rawQuery("select * from " + MeteoDbSchema.TestTable.NAME,null);
+        if(c.getCount()==0)
+            return true;
+        else
+            return false;
+    }
 
-        Location entry;
+    public Location findGps()
+    {
         CursorWrapper cursor = queryData(null, null);
+        try {
+            cursor.moveToFirst();
+            //LocationsHolder.get(this).setGps(cursor.getLocation());
+            return cursor.getLocation();
 
-        if(cursor!=null){
-            try {
-
-                cursor.moveToFirst();
-                entry = cursor.getLocation();
-                if(entry==null)
-                    return null;
-            } finally {
-                cursor.close();
-            }
-        }else
-            return new Location("Error");
-
-        return entry;
+        } finally {
+            cursor.close();
+        }
     }
 
     public void readData() {

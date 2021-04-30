@@ -71,13 +71,8 @@ public class Http extends AsyncTask<Location, Void, Void> {
 
         JSONObject list = jsonBody.getJSONArray("list").getJSONObject(0);
 
-        Log.i("Ciao", "Ciao: " + list);
-
         JSONObject main = list.getJSONObject("main");
         JSONObject weather = list.getJSONArray("weather").getJSONObject(0);
-
-        //Log.i("Ciao", "Ciao: " + weather);
-
 
         Double tmp=main.getDouble("temp");
         Double temp_min = main.getDouble("temp_min");
@@ -95,9 +90,7 @@ public class Http extends AsyncTask<Location, Void, Void> {
         String url;
 
         for(int i=0;i<locations.length;i++) {
-
             try {
-
                 if(locations[i].getName().equals("GPS")) {
                     url = Uri.parse("https://api.openweathermap.org/data/2.5/find")
                             .buildUpon()
@@ -107,7 +100,6 @@ public class Http extends AsyncTask<Location, Void, Void> {
                             .appendQueryParameter("appid", API_KEY)
                             .build().toString();
                 }else {
-
                     url = Uri.parse("https://api.openweathermap.org/data/2.5/find")
                             .buildUpon()
                             .appendQueryParameter("q", locations[0].getName())
@@ -115,15 +107,12 @@ public class Http extends AsyncTask<Location, Void, Void> {
                             .appendQueryParameter("appid", API_KEY)
                             .build().toString();
                 }
-
                 String jsonString = getUrlString(url);
-
                 JSONObject jsonBody = new JSONObject(jsonString);
 
                 int count=jsonBody.getInt("count");
                 if(count>0){
                     locations[0].setWeather(parseItems(jsonBody));
-
                     //URL per icona
                     String urlIcon = "https://openweathermap.org/img/wn/" + locations[0].getWeather().getIcon() + "@2x.png";
 
@@ -131,20 +120,15 @@ public class Http extends AsyncTask<Location, Void, Void> {
                         InputStream input = new java.net.URL(urlIcon).openStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(input);
                         locations[0].getWeather().setImage(bitmap);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    } catch (Exception e) { e.printStackTrace(); }
                 }else{
                     locations[0].setWeather(null);
                 }
-
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to fetch items", ioe);
             } catch (JSONException je) {
                 Log.e(TAG, "Failed to parse JSON", je);
             }
-
         }
         return null;
     }

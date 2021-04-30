@@ -40,9 +40,9 @@ public class LocationsHolder {
     //Lettura di location da DB
     private LocationsHolder(Context context) {
 
-        Log.i("READ","GPS" + ma.readGPS().getName());
+        //Log.i("READ","GPS" + ma.readGPS().getName());
 
-        if(!ma.readGPS().getName().equals("GPS")){
+        if(MainActivity.checkDB()){
             Location location = new Location();
             location.setName("GPS"); //"Location # " + i + " "+ location.getLati() +"°  "+ location.getLongi()+ "°"
             mLocations.add(location);

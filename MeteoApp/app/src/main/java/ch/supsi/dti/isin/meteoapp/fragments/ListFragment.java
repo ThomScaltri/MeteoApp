@@ -86,11 +86,10 @@ public class ListFragment extends Fragment {
                         Location gpsLoc= LocationsHolder.get(getContext()).getLocations().get(0);
                         gpsLoc.setLati(location.getLatitude());
                         gpsLoc.setLongi(location.getLongitude());
-                        //gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
+                        /*gpsLoc.setName("GPS"); // + " "+ gpsLoc.getLati() +"°  "+ gpsLoc.getLongi()+ "°"
                         //Log.i(TAG, "Lati" + location.getLongitude());
                         //Log.i(TAG, "Longi" + location.getLatitude());
-                        //LocationsHolder.get(getActivity()).addLocation(gpsLoc);
-
+                        //LocationsHolder.get(getActivity()).addLocation(gpsLoc);*/
                         Http.doRequest(gpsLoc);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -104,8 +103,6 @@ public class ListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_add:
 
-                //richiamo dialog aggiunta location
-
                 final EditText editText = new EditText(getContext());
                 editText.setText("");
 
@@ -114,13 +111,8 @@ public class ListFragment extends Fragment {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //leggere testo
                                 //add location ad holder
                                 String m_Text = editText.getText().toString();
-
-
-                                //LocationsHolder.get(getActivity()).insertData(m_Text);
-
                                 Location location=new Location();
                                 location.setName(m_Text);
                                 Http.doRequest(location);
@@ -128,9 +120,8 @@ public class ListFragment extends Fragment {
                                 boolean flag=false;
                                 for (Location l: LocationsHolder.get(getActivity()).getLocations()) {
                                     if(l.getWeather()==null)
-                                        Log.i("ERRORe", "ERRORE");
+                                        Log.i("ERRORE", "ERRORE");
 
-                                    //Log.i("Ciao", "Bellissimo" + l.toString() );
                                     if(l.getWeather().getName().equals(location.getWeather().getName())) {
                                         flag=false;
                                         break;
@@ -138,21 +129,16 @@ public class ListFragment extends Fragment {
                                     else {
                                         flag=true;
                                     }
-
                                 }
 
                                 Toast toast;
-
-
                                 if(location.getWeather()==null) {
                                     toast = Toast.makeText(getActivity(),
                                             "location not found",
                                             Toast.LENGTH_SHORT);
                                 }else {
-
                                     if (flag) {
                                         location.setName(location.getWeather().getName());
-
                                         LocationsHolder.get(getActivity()).addLocation(location);
                                         MainActivity.insertData(location);
                                         mAdapter.notifyDataSetChanged();
@@ -164,10 +150,8 @@ public class ListFragment extends Fragment {
                                         toast = Toast.makeText(getActivity(),
                                                 "location already added",
                                                 Toast.LENGTH_SHORT);
-
                                     }
                                 }
-
                                 toast.show();
                             }
                         })

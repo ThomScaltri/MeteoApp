@@ -77,7 +77,7 @@ public class Location {
                 ", mName='" + mName + '\'' +
                 ", lati=" + lati +
                 ", longi=" + longi +
-                ", weather=" + weather.toString() +
+                //", weather=" + weather.toString() +
                 '}';
     }
 }
